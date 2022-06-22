@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import Navbar from "./Components/Navbar";
+import TodoState from "./Context/todo/TodoState";
+import Home from "./Components/Home"
+import Login from "./Components/Login"
+import Signup from "./Components/Signup"
+import AddTodo from "./Components/AddTodo"
+import Todos from "./Components/Todos";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <TodoState>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/archive' element={<Todos archive={true}/>}/>
+            <Route path='/add' element={<AddTodo/>} />
+            <Route path='/today' element={<Todos today={true} />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/signup' element={<Signup />} />
+          </Routes>
+        </Router>
+      </TodoState>
+    </>
   );
 }
 
