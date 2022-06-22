@@ -12,16 +12,16 @@ const Todoitem = (props) => {
   const yyyy = newdate.getFullYear();
   newdate = dd + "/" + mm + "/" + yyyy
 
-  const completedtodo =async ()=>{
-    const checkBox = await document.getElementById('completed').checked
-    if(checkBox){
-       editTodo(todo._id, todo.todo, todo.edate, todo.tag ,true,Date.now())
-       console.log("true")
-    }
-    else if(!checkBox)
-    {
+  const completedtodo = ()=>{
+    
+    if(todo.completed){
        editTodo(todo._id, todo.todo, todo.edate, todo.tag ,false,null)
        console.log("false")
+    }
+    else if(!todo.completed)
+    {
+       editTodo(todo._id, todo.todo, todo.edate, todo.tag ,true,Date.now())
+       console.log("true")
     }
   }
 
@@ -42,7 +42,7 @@ const Todoitem = (props) => {
             </div>
             <div>
               <label htmlFor="completed">Completed :</label>
-              <input id='completed' className='mx-2' onClick={completedtodo}  checked={todo.completed ? true : false} onChange={()=>{console.log("change")}} type="checkbox" />
+              <input type="checkbox" id='completed' className='mx-2' onClick={completedtodo}  defaultChecked={todo.completed ? true : false}   />
             </div>
           </div>
         </div>

@@ -90,9 +90,11 @@ const Todos = (props) => {
                 {(props.archive) && (todos.length!==0) && todos.map((note)=>{
                     return (note.completed) && <Todoitem key={note._id} updatetodo={updatetodo} todo={note} />
                 })}
-                {(props.today) && (todos.length!==0) && todos.map((note)=>{
+
+                {(props.today) && (!props.archive) && (todos.length!==0) && todos.map((note)=>{
                     return (new Date(note.cdate).getDate() === new Date(Date.now()).getDate()) && (new Date(note.cdate).getMonth() === new Date(Date.now()).getMonth()) && (new Date(note.cdate).getFullYear() === new Date(Date.now()).getFullYear()) && <Todoitem key={note._id} updatetodo={updatetodo} todo={note} />
                 })}
+
                 {(!props.archive) && (!props.today) && (todos.length!==0) && todos.map((note) => {
                     return <Todoitem key={note._id} updatetodo={updatetodo} todo={note} />
                 })}
