@@ -8,7 +8,7 @@ const Todoitem = (props) => {
   const { deleteTodo ,editTodo} = context
   var newdate = new Date(todo.edate)
   const dd = newdate.getDate();
-  const mm = newdate.getMonth();
+  const mm = newdate.getMonth()+1;
   const yyyy = newdate.getFullYear();
   newdate = dd + "/" + mm + "/" + yyyy
 
@@ -32,9 +32,10 @@ const Todoitem = (props) => {
           <h5 className="card-title" style={{ fontWeight: "bold" }}>{todo.todo}</h5>
           <div className='d-flex' style={{ justifyContent: "space-between" }}>
             <p className="card-text">Due Date : {newdate}</p>
-            {(new Date(Date.now()) > new Date(todo.edate)) && (new Date(Date.now()).getDate() > new Date(todo.edate).getDate()) && <p style={{ color: "red" }}>Due date  is over</p>}
+            {(new Date(Date.now()).getTime() > new Date(todo.edate).getTime()) && (new Date(Date.now()).getDate() > new Date(todo.edate).getDate()) && <p style={{ color: "red" }}>Due date  is over</p>}
             { (new Date(Date.now()).getDate() === new Date(todo.edate).getDate()) && (new Date(Date.now()).getMonth() === new Date(todo.edate).getMonth()) && (new Date(Date.now()).getFullYear() === new Date(todo.edate).getFullYear()) && <p style={{color:"red" }}>Due Today </p>}
           </div>
+          <p style={{color : "blue"}}>{todo.tag}</p>
           <div className='d-flex' style={{ justifyContent: "space-between" }}>
             <div>
               <i style={{ cursor: "pointer" }} className="far fa-trash-alt mx-2" onClick={() => { deleteTodo(todo._id) }}></i>

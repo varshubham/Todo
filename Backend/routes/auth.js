@@ -5,6 +5,7 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const fetchuser = require('../middleware/fetchuser')
+const nodemailer = require('nodemailer');
 
 const SECRET_KEY = "thisisasecretkey"
 
@@ -98,4 +99,59 @@ router.post('/getuser',fetchuser,async(req,res)=>{
         res.status(500).send("Internal server  huhuerror")
     }
 })
+
+// route 4 : edit user details
+
+router.put('/edit', fetchuser, async (req, res) => {
+    try {
+
+        const { name, email } = req.body;
+        const newuser = {};
+        if (name) { newuser.name = name }
+        if (email) { newuser.email = email }
+
+        let user = await User.findById(req.user.id)
+        if (!user) {
+            return res.status(404).send("Not found")
+        }
+        else {
+            users = await User.findByIdAndUpdate(req.user.id, { $set: newuser }, { new: true })
+            res.json({ users })
+        }
+
+
+    } catch (error) {
+        res.status(500).send("Internal Server error")
+    }
+})
+
+// route 5 : change password
+router.put('/changepass', fetchuser, async (req, res) => {
+    try {
+        let user = await User.findById(req.user.id)
+        if (!user) {
+            return res.status(404).send("not found")
+        }
+        else {
+            const {password} = req.body;
+            const userpp = await User.findById(req.user.id).select("password");
+            const comparrr = await bcrypt.compare(password, userpp.password);
+            if (comparrr) {
+                return res.status(400).json({ error: "please set new password" })
+            }
+           
+                const salt = await bcrypt.genSalt(10);
+                const secPass = await bcrypt.hash(req.body.password, salt)
+
+                const user = await User.findByIdAndUpdate(req.user.id, { password: secPass}, { new: true })
+                res.json(user)
+
+           
+        }
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send("Internal Server error")
+    }
+})
+
 module.exports = router

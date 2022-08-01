@@ -9,7 +9,7 @@ const Login = () => {
 
     const handleclick = async (e) => {
         e.preventDefault();
-        const response = await fetch(`http://localhost:5000/api/auth/login`, {
+        const response = await fetch(`http://localhost:5000/api/auth/login`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -17,16 +17,15 @@ const Login = () => {
             body: JSON.stringify({ email: credentials.email, password: credentials.password })
         });
         const json = await response.json();
-        console.log(json)
         if (json.success) {
             localStorage.setItem("token", json.authtoken);
             setAlerts({ type: "success", msg: "Logged in Successfully" })
             setShow(true)
-            setTimeout(() => {
-                setShow(false)
-                navigate('/')
-            }, 1500);
-
+            
+                setTimeout(() => {
+                    setShow(false)
+                    navigate('/')
+                }, 1500);
         }
         else {
             setAlerts({ type: "danger", msg: "Invalid Credentials" })
@@ -43,8 +42,8 @@ const Login = () => {
         <div>
             {show && <Alert alert={alerts} />}
             <div className='container my-3'>
-                <h1 className='text-center'>Login to Todo App</h1>
-                <form  style={{width:"30%",marginLeft:"auto",marginRight:"auto",marginTop:"30px"}} onSubmit={handleclick}>
+                <h1 className='text-center'>Login to Inventory</h1>
+                <form className='my-3' style={{ width: "30%", marginLeft: "auto", marginRight: "auto", marginTop: "30px" }} onSubmit={handleclick}>
                     <div className="mb-3">
                         <label htmlFor="email" className="form-label">Email address</label>
                         <input type="email" className="form-control" name='email' id="email" value={credentials.email} aria-describedby="emailHelp" onChange={onChange} required />
@@ -63,3 +62,4 @@ const Login = () => {
 }
 
 export default Login
+
