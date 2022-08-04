@@ -3,7 +3,7 @@ import React,{ useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Profile = () => {
-    const [profile,setProfile] = useState({name:"",email:""})
+    const [profile,setProfile] = useState({name:"",email:"",password:""})
     const [data,setData] = useState(null)
     const navigate = useNavigate();
     const user = async()=>{
@@ -51,6 +51,23 @@ const Profile = () => {
        
     }
 
+    const handlepassword = async()=>{
+        try{
+            const response = await fetch(`http://localhost:5000/api/auth/changepass`,{
+                method: 'PUT',
+                headers: {
+                    'auth-token':localStorage.getItem('token'),
+                    'Content-Type': 'application/json'
+                },
+                body:JSON.stringify({ password:profile.password })
+            })
+            const datsa = await response.json();
+            console.log(datsa)
+        }catch(error){
+            console.log(error.message)
+        }
+    }
+
   return (
     <div>
       {data && <div style={{display:"flex"}}>
@@ -62,7 +79,11 @@ const Profile = () => {
       <p>Email  :</p> 
       <input style={{height:"25px",marginLeft : "5px"}} type='email' name='email' value={profile.email} onChange={onchange}/>
       <button onClick={handleclick}>Update</button>
+      <p>Password  :</p> 
+      <input style={{height:"25px",marginLeft : "5px"}} type='password' name='password' onChange={onchange}/>
+      <button onClick={handlepassword}>Update</button>
       </div>}
+
       
     </div>
   )
